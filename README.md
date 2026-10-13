@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# emsignerWeb
 
-## Getting Started
+This is a [Next.js](https://nextjs.org) application using the App Router,
+React, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) 20.9 or later
+- One of the following package managers:
+  - [pnpm](https://pnpm.io/installation) 11.1.2 or later (recommended)
+  - [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm), which is included with Node.js
+
+You can check your installed versions with:
+
+```bash
+node --version
+pnpm --version
+# or
+npm --version
+```
+
+## Installation
+
+Run the commands from the project directory:
+
+```bash
+cd my-app
+```
+
+### Using pnpm (recommended)
+
+Install the dependencies from the committed lockfile:
+
+```bash
+pnpm install
+```
+
+### Using npm
+
+Install the dependencies with npm:
+
+```bash
+npm install
+```
+
+The repository uses `pnpm-lock.yaml` as its canonical lockfile. If you use
+npm, npm may create a `package-lock.json`; do not commit both lockfiles unless
+the team has agreed to maintain both.
+
+## Start the development server
+
+Using pnpm:
+
+```bash
+pnpm dev
+```
+
+Using npm:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser. The
+development server automatically reloads when you edit files.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Available scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Purpose | pnpm | npm |
+| --- | --- | --- |
+| Start the development server | `pnpm dev` | `npm run dev` |
+| Check the application with ESLint | `pnpm lint` | `npm run lint` |
+| Create a production build | `pnpm build` | `npm run build` |
+| Start the production server | `pnpm start` | `npm run start` |
 
-## Learn More
+To run the production version locally:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm build
+pnpm start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Or with npm:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run build
+npm run start
+```
 
-## Deploy on Vercel
+The production server is available at [http://localhost:3000](http://localhost:3000).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `src/app/` - App Router pages, layouts, and global styles
+- `public/` - Static assets served from the site root
+- `next.config.ts` - Next.js configuration
+- `package.json` - Project metadata, dependencies, and scripts
+
+The main page is [src/app/page.tsx](src/app/page.tsx).
+
+## Learn more
+
+- [Next.js documentation](https://nextjs.org/docs)
+- [Next.js App Router documentation](https://nextjs.org/docs/app)
+- [Learn Next.js](https://nextjs.org/learn)
