@@ -1,9 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { RegisterFormData , FormErrors} from "@/features/auth/types";
+import { useRegister } from "@/features/auth/hooks/use-register";
+import { RegisterFormData, FormErrors } from "@/features/auth/types";
 import { validateField, validateForm } from "@/features/auth/utils";
-
 
 const initialForm: RegisterFormData = {
   fullName: "",
@@ -13,8 +14,9 @@ const initialForm: RegisterFormData = {
   confirmPassword: "",
 };
 
-
 export default function RegisterForm() {
+  const router = useRouter();
+  const registerMutation = useRegister();
   const [form, setForm] = useState<RegisterFormData>(initialForm);
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -26,8 +28,9 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [serverError, setServerError] = useState("");
+  const serverError =
+    registerMutation.error?.response?.data?.message ??
+    (registerMutation.error ? "Registration failed. Please try again." : "");
 
   const handleChange = (
     field: keyof RegisterFormData,
@@ -79,10 +82,10 @@ export default function RegisterForm() {
     }));
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    setServerError("");
+    registerMutation.reset();
 
     // Validate everything before submitting.
     const validationErrors = validateForm(form);
@@ -102,42 +105,21 @@ export default function RegisterForm() {
       return;
     }
 
-    try {
-      setIsSubmitting(true);
-
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    registerMutation.mutate(
+      {
+        fullName: form.fullName,
+        email: form.email,
+        password: form.password,
+      },
+      {
+        onSuccess: () => {
+          setForm(initialForm);
+          setErrors({});
+          setTouched({});
+          router.push("/login");
         },
-        body: JSON.stringify({
-          fullName: form.fullName,
-          email: form.email,
-          phone: form.phone,
-          password: form.password,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Registration failed.");
-      }
-
-      console.log("Registration successful:", data);
-
-      setForm(initialForm);
-      setErrors({});
-      setTouched({});
-    } catch (error) {
-      setServerError(
-        error instanceof Error
-          ? error.message
-          : "Something went wrong."
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+      },
+    );
   };
 
   return (
@@ -272,8 +254,8 @@ export default function RegisterForm() {
       {/* Server error */}
       {serverError && <p>{serverError}</p>}
 
-      <button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Creating account..." : "Create account"}
+      <button type="submit" disabled={registerMutation.isPending}>
+        {registerMutation.isPending ? "Creating account..." : "Create account"}
       </button>
     </form>
   );
