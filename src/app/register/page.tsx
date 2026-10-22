@@ -116,7 +116,7 @@ export default function RegisterForm() {
           setForm(initialForm);
           setErrors({});
           setTouched({});
-          router.push("/login");
+          router.push("/");
         },
       },
     );
